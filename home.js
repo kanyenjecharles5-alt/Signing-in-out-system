@@ -1,5 +1,5 @@
 // =============================
-// HOME PAGE (Display Only)
+// HOME PAGE (DISPLAY ONLY)
 // =============================
 
 // Elements
@@ -9,17 +9,17 @@ const nameText = document.getElementById("name");
 const timeText = document.getElementById("time");
 const actionText = document.getElementById("action");
 
-// Retrieve data saved by index.js
+// Get the information saved by index.js
 const name = localStorage.getItem("lastName");
 const action = localStorage.getItem("lastAction");
 const time = localStorage.getItem("lastTime");
 
-// If someone somehow opens home.html directly
+// If someone opens home.html directly
 if (!name || !action || !time) {
     window.location.replace("index.html");
 }
 
-// Display information
+// Show attendance details
 status.innerHTML = "✅ Attendance Recorded";
 details.style.display = "block";
 
@@ -32,13 +32,13 @@ if (action === "IN") {
     actionText.innerHTML = "🏠 Signed Out";
 }
 
-// After 3 seconds clear the display
+// After 3 seconds, clear the screen
 setTimeout(() => {
 
     status.innerHTML = "Ready for the next scan.";
     details.style.display = "none";
 
-    // Optional: clear old data
+    // Clear stored values
     localStorage.removeItem("lastName");
     localStorage.removeItem("lastAction");
     localStorage.removeItem("lastTime");
