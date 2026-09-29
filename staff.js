@@ -1,64 +1,38 @@
 // =============================
 // Google Apps Script URL
 // =============================
-
-const scriptURL = "https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
+const scriptURL =
+"https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
 
 // =============================
-// Token
+// Check Token
 // =============================
-
 const token = localStorage.getItem("token");
-// ======================================
-// Prevent attendance loop
-// ======================================
 
-if (sessionStorage.getItem("attendanceDone") === "true") {
-
-    sessionStorage.removeItem("attendanceDone");
-
-    document.getElementById("welcome").innerHTML =
-        "✅ Attendance Recorded";
-
-    document.getElementById("statusMessage").innerHTML =
-        "You can now close this page and scan the QR again later.";
-
-    // Stop the script from recording attendance again
-    throw new Error("Attendance already processed");
-
+if (!token) {
+    window.location.replace("register.html");
 }
-
-if(!token){
-
-    window.location.href="register.html";
-
-}
-
-const welcome=document.getElementById("welcome");
-const status=document.getElementById("statusMessage");
-
-const popup=document.getElementById("popup");
-const popupIcon=document.getElementById("popupIcon");
-const popupTitle=document.getElementById("popupTitle");
-const popupMessage=document.getElementById("popupMessage");
 
 // =============================
+const welcome = document.getElementById("welcome");
+const status = document.getElementById("statusMessage");
 
-function greeting(){
+const popup = document.getElementById("popup");
+const popupIcon = document.getElementById("popupIcon");
+const popupTitle = document.getElementById("popupTitle");
+const popupMessage = document.getElementById("popupMessage");
 
-    const h=new Date().getHours();
+// =============================
+function greeting() {
+    const h = new Date().getHours();
 
-    if(h<12) return "Good Morning ☀️";
-
-    if(h<17) return "Good Afternoon 🌤️";
-
+    if (h < 12) return "Good Morning ☀️";
+    if (h < 17) return "Good Afternoon 🌤️";
     return "Good Evening 🌙";
-
 }
 
 // =============================
-
-function showPopup(icon, title, message){
+function showPopup(icon, title, message) {
 
     popupIcon.innerHTML = icon;
     popupTitle.innerHTML = title;
@@ -66,124 +40,108 @@ function showPopup(icon, title, message){
 
     popup.style.display = "flex";
 
-    // Tell the next page load not to record attendance again
-    sessionStorage.setItem("attendanceDone", "true");
-
     setTimeout(() => {
         window.location.replace("home.html");
-    }, 300);
-
-}
-
+    }, 2000);
 
 }
 
 // =============================
+function recordAttendance(action) {
 
-function recordAttendance(action){
-
-    fetch(scriptURL,{
-
-        method:"POST",
-
-        body:JSON.stringify({
-
-            request:"attendance",
-
-            token:token,
-
-            action:action
-
+    fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+            request: "attendance",
+            token: token,
+            action: action
         })
-
     })
 
-    .then(r=>r.json())
+    .then(response => response.json())
 
-    .then(data=>{
+    .then(data => {
 
-        if(!data.success){
+        if (!data.success) {
 
-            status.innerHTML="Unable to record attendance.";
-
+            status.innerHTML = "Unable to record attendance.";
             return;
 
         }
 
-        if(action==="IN"){
+        if (action === "IN") {
 
             showPopup(
-
                 "☀️",
-
                 "Attendance Recorded!",
-
                 "Have a great day! 😊<br><br>Go inspire those kids."
-
             );
 
-        }else{
+        } else {
 
             showPopup(
-
                 "🎉",
-
                 "GO HOME!!",
-
                 "😂 You've survived another day surrounded by kids.<br><br>😄 Rest abi.<br><br>See you tomorrow ❤️"
-
             );
 
         }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+        status.innerHTML = "Unable to connect.";
 
     });
 
 }
 
 // =============================
+// Check User Status
+// =============================
 
-fetch(scriptURL,{
+status.innerHTML = "Checking attendance...";
 
-method:"POST",
+fetch(scriptURL, {
 
-body:JSON.stringify({
+    method: "POST",
 
-request:"checkStatus",
+    body: JSON.stringify({
 
-token:token
+        request: "checkStatus",
+        token: token
 
-})
-
-})
-
-.then(r=>r.json())
-
-.then(data=>{
-
-if(!data.success){
-
-localStorage.removeItem("token");
-
-window.location.href="register.html";
-
-return;
-
-}
-
-welcome.innerHTML=`👋 ${greeting()}, <strong>${data.name}</strong>`;
-
-status.innerHTML="Checking attendance...";
-
-setTimeout(()=>{
-
-recordAttendance(data.nextAction);
-
-},300);
+    })
 
 })
 
-.catch(()=>{
+.then(response => response.json())
 
-status.innerHTML="Unable to connect.";
+.then(data => {
+
+    if (!data.success) {
+
+        localStorage.removeItem("token");
+        window.location.replace("register.html");
+        return;
+
+    }
+
+    welcome.innerHTML = `👋 ${greeting()}, <strong>${data.name}</strong>`;
+
+    setTimeout(() => {
+
+        recordAttendance(data.nextAction);
+
+    }, 500);
+
+})
+
+.catch(error => {
+
+    console.error(error);
+    status.innerHTML = "Unable to connect to server.";
 
 });
