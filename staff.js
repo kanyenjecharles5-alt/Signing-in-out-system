@@ -2,7 +2,7 @@
 // Google Apps Script URL
 // =============================
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbyRCMn53bFX71WVnPFj5fsJHtg9-IowW0JgRWCAzOgM76FhbUoABJaPfteY7C7ooMIzxA/exec";
 
 // =============================
 // Token
