@@ -1,0 +1,202 @@
+/* =====================================
+   RESET
+===================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, Arial, sans-serif;
+}
+
+/* =====================================
+   BODY
+===================================== */
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f4c81,#3fa9f5);
+    padding:20px;
+}
+
+/* =====================================
+   CONTAINER
+===================================== */
+
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =====================================
+   CARD
+===================================== */
+
+.card{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    padding:40px 30px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+    animation:fadeIn .6s ease;
+}
+
+/* =====================================
+   LOGO
+===================================== */
+
+.logo{
+    width:100px;
+    height:100px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto 20px;
+}
+
+/* =====================================
+   TITLES
+===================================== */
+
+.card h1{
+    text-align:center;
+    color:#003366;
+    margin-bottom:10px;
+    font-size:30px;
+}
+
+.card p{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+    line-height:1.5;
+}
+
+/* =====================================
+   INPUTS
+===================================== */
+
+.input-box{
+    display:flex;
+    align-items:center;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:18px;
+    transition:.3s;
+}
+
+.input-box:hover{
+    border-color:#0056b3;
+}
+
+.input-box:focus-within{
+    border-color:#0056b3;
+    box-shadow:0 0 8px rgba(0,86,179,.25);
+}
+
+.input-box i{
+    color:#0056b3;
+    font-size:18px;
+    margin-right:12px;
+}
+
+.input-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:16px;
+    background:transparent;
+}
+
+/* =====================================
+   BUTTON
+===================================== */
+
+button{
+    width:100%;
+    padding:15px;
+    background:#0056b3;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#003d80;
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+/* =====================================
+   BACK BUTTON
+===================================== */
+
+.back{
+    display:block;
+    margin-top:20px;
+    text-align:center;
+    text-decoration:none;
+    color:#0056b3;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.back:hover{
+    color:#003366;
+}
+
+/* =====================================
+   ANIMATION
+===================================== */
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width:500px){
+
+    .card{
+        padding:30px 20px;
+    }
+
+    .card h1{
+        font-size:26px;
+    }
+
+    .card p{
+        font-size:15px;
+    }
+
+    button{
+        font-size:16px;
+    }
+
+}
