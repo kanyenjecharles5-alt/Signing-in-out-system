@@ -14,6 +14,8 @@ if (!token) {
 }
 
 // =============================
+// Elements
+// =============================
 const welcome = document.getElementById("welcome");
 const status = document.getElementById("statusMessage");
 
@@ -21,6 +23,10 @@ const popup = document.getElementById("popup");
 const popupIcon = document.getElementById("popupIcon");
 const popupTitle = document.getElementById("popupTitle");
 const popupMessage = document.getElementById("popupMessage");
+
+// These will store the current user info
+let currentName = "";
+let currentAction = "";
 
 // =============================
 function greeting() {
@@ -40,6 +46,11 @@ function showPopup(icon, title, message) {
 
     popup.style.display = "flex";
 
+    // Save information for home.html
+    localStorage.setItem("lastName", currentName);
+    localStorage.setItem("lastAction", currentAction);
+    localStorage.setItem("lastTime", new Date().toLocaleTimeString());
+
     setTimeout(() => {
         window.location.replace("home.html");
     }, 2000);
@@ -48,6 +59,8 @@ function showPopup(icon, title, message) {
 
 // =============================
 function recordAttendance(action) {
+
+    currentAction = action;
 
     fetch(scriptURL, {
         method: "POST",
@@ -63,10 +76,8 @@ function recordAttendance(action) {
     .then(data => {
 
         if (!data.success) {
-
             status.innerHTML = "Unable to record attendance.";
             return;
-
         }
 
         if (action === "IN") {
@@ -101,7 +112,6 @@ function recordAttendance(action) {
 // =============================
 // Check User Status
 // =============================
-
 status.innerHTML = "Checking attendance...";
 
 fetch(scriptURL, {
@@ -128,6 +138,8 @@ fetch(scriptURL, {
         return;
 
     }
+
+    currentName = data.name;
 
     welcome.innerHTML = `👋 ${greeting()}, <strong>${data.name}</strong>`;
 
