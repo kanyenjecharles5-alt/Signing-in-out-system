@@ -1,101 +1,46 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
+// =============================
+// HOME PAGE (Display Only)
+// =============================
 
-const token = localStorage.getItem("token");
-
+// Elements
 const status = document.getElementById("status");
-
 const details = document.getElementById("details");
-
 const nameText = document.getElementById("name");
-
 const timeText = document.getElementById("time");
-
 const actionText = document.getElementById("action");
 
-if(!token){
+// Retrieve data saved by index.js
+const name = localStorage.getItem("lastName");
+const action = localStorage.getItem("lastAction");
+const time = localStorage.getItem("lastTime");
 
-    window.location.href="register.html";
-
+// If someone somehow opens home.html directly
+if (!name || !action || !time) {
+    window.location.replace("index.html");
 }
 
-fetch(scriptURL,{
+// Display information
+status.innerHTML = "✅ Attendance Recorded";
+details.style.display = "block";
 
-method:"POST",
+nameText.innerHTML = name;
+timeText.innerHTML = "🕒 " + time;
 
-body:JSON.stringify({
+if (action === "IN") {
+    actionText.innerHTML = "☀️ Signed In";
+} else {
+    actionText.innerHTML = "🏠 Signed Out";
+}
 
-request:"checkStatus",
+// After 3 seconds clear the display
+setTimeout(() => {
 
-token:token
+    status.innerHTML = "Ready for the next scan.";
+    details.style.display = "none";
 
-})
+    // Optional: clear old data
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("lastAction");
+    localStorage.removeItem("lastTime");
 
-})
-
-.then(r=>r.json())
-
-.then(data=>{
-
-    if(!data.success){
-
-        localStorage.removeItem("token");
-
-        window.location.href="register.html";
-
-        return;
-
-    }
-
-    fetch(scriptURL,{
-
-        method:"POST",
-
-        body:JSON.stringify({
-
-            request:"attendance",
-
-            token:token,
-
-            action:data.nextAction
-
-        })
-
-    })
-
-    .then(r=>r.json())
-
-    .then(result=>{
-
-        if(result.success){
-
-            status.innerHTML="✅ Attendance Recorded";
-
-            details.style.display="block";
-
-            nameText.innerHTML=data.name;
-
-            timeText.innerHTML="🕒 "+new Date().toLocaleTimeString();
-
-            if(data.nextAction=="IN"){
-
-                actionText.innerHTML="☀️ Signed In";
-
-            }else{
-
-                actionText.innerHTML="🏠 Signed Out";
-
-            }
-
-            setTimeout(()=>{
-
-                status.innerHTML="Ready for the next scan.";
-
-                details.style.display="none";
-
-            },800);
-
-        }
-
-    });
-
-});
+}, 3000);
