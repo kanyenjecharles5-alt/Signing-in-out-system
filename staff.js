@@ -73,7 +73,7 @@ function showPopup(icon, title, message){
         window.location.replace("home.html");
     }, 300);
 
-}
+
 
 
 }
