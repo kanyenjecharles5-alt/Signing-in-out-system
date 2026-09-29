@@ -1,4 +1,4 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbyRCMn53bFX71WVnPFj5fsJHtg9-IowW0JgRWCAzOgM76FhbUoABJaPfteY7C7ooMIzxA/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxEtYoy0YEN-Iyvg5Uu87jiLpeV6gXuGOJnSeL8gSF57EIgYSUhwlQ771tijrdwdCyGhA/exec";
 
 const token = localStorage.getItem("token");
 
