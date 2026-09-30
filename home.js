@@ -1,101 +1,27 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
+const status=document.getElementById("status");
+const details=document.getElementById("details");
 
-const token = localStorage.getItem("token");
+const name=document.getElementById("name");
+const time=document.getElementById("time");
+const action=document.getElementById("action");
 
-const status = document.getElementById("status");
+const lastName=sessionStorage.getItem("lastName");
+const lastAction=sessionStorage.getItem("lastAction");
 
-const details = document.getElementById("details");
+status.innerHTML="✅ Attendance Recorded";
 
-const nameText = document.getElementById("name");
+details.style.display="block";
 
-const timeText = document.getElementById("time");
+name.innerHTML=lastName || "";
 
-const actionText = document.getElementById("action");
+time.innerHTML="🕒 "+new Date().toLocaleTimeString();
 
-if(!token){
+if(lastAction==="IN"){
 
-    window.location.href="register.html";
+    action.innerHTML="☀️ Signed In";
+
+}else{
+
+    action.innerHTML="🏠 Signed Out";
 
 }
-
-fetch(scriptURL,{
-
-method:"POST",
-
-body:JSON.stringify({
-
-request:"checkStatus",
-
-token:token
-
-})
-
-})
-
-.then(r=>r.json())
-
-.then(data=>{
-
-    if(!data.success){
-
-        localStorage.removeItem("token");
-
-        window.location.href="register.html";
-
-        return;
-
-    }
-
-    fetch(scriptURL,{
-
-        method:"POST",
-
-        body:JSON.stringify({
-
-            request:"attendance",
-
-            token:token,
-
-            action:data.nextAction
-
-        })
-
-    })
-
-    .then(r=>r.json())
-
-    .then(result=>{
-
-        if(result.success){
-
-            status.innerHTML="✅ Attendance Recorded";
-
-            details.style.display="block";
-
-            nameText.innerHTML=data.name;
-
-            timeText.innerHTML="🕒 "+new Date().toLocaleTimeString();
-
-            if(data.nextAction=="IN"){
-
-                actionText.innerHTML="☀️ Signed In";
-
-            }else{
-
-                actionText.innerHTML="🏠 Signed Out";
-
-            }
-
-            setTimeout(()=>{
-
-                status.innerHTML="Ready for the next scan.";
-
-                details.style.display="none";
-
-            },800);
-
-        }
-
-    });
-
-});
