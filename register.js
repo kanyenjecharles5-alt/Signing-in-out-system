@@ -1,5 +1,5 @@
 // Google Apps Script Web App URL
-const scriptURL = "https://script.google.com/macros/s/AKfycbxEtYoy0YEN-Iyvg5Uu87jiLpeV6gXuGOJnSeL8gSF57EIgYSUhwlQ771tijrdwdCyGhA/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzzE0boOzPQg-D25RBhOMTJsiqba6ffhW-AmMuSE2Kr2X3mkvxmVba2vza7ZQ2yW_BPvQ/exec";
 
 const form = document.getElementById("registerForm");
 
